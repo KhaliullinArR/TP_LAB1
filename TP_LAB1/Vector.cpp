@@ -4,20 +4,26 @@
 #include <iostream>
 #include <iomanip>
 
-Vector::Vector(const int length):dim(0){
+Vector::Vector(const int length):dim(length){
 
-	if (length < 0) throw NegativeDimException();
+	if (length <= 0) throw NegativeDimException();
 
 	dim = length;
 
-	/*for (size_t i = 0; i < length; i++)
-		coor.append(0);*/
+	for (size_t i = 0; i < length; i++)
+		coor.append(0);
 
 
 }
 
 Vector::Vector(const Vector& vector){
-	*this = vector;
+	this->dim = vector.dim;
+
+
+	List<double>::Iterator it = vector.coor.begin();
+
+	for (size_t i = 0; i < vector.dim; i++, ++it)
+		coor.append(*it);
 }
 
 void Vector::setCoor(List<double> &list){
@@ -25,24 +31,12 @@ void Vector::setCoor(List<double> &list){
 	if (list.size() != this->dim)throw VectorException();
 
 
-	if (coor.size() == 0) {
-
-
-		List<double>::Iterator it = list.begin();
-
-		for (; it != list.end(); ++it)
-			coor.append(*it);
-	}else {
-
 		List<double>::Iterator it = list.begin();
 		List<double>::Iterator it_this = coor.begin();
 
 		for (; it != list.end(); ++it, ++it_this)
 			*it_this = *it;
-	}
 
-	
-	
 }
 
 List<double>& Vector::getCoor()
@@ -65,13 +59,15 @@ Vector& Vector::operator=(const Vector& vector)
 	if (this == &vector)
 		return *this;
 	
+	if (this->dim != vector.dim) throw DifferentDimException();
+
 	dim = vector.dim;
-	coor.~List();
 
 	List<double>::Iterator it = vector.coor.begin();
+	List<double>::Iterator it_this = coor.begin();
 
-	for (;it != vector.coor.end(); ++it) 
-		coor.append(*it);
+	for (;it != vector.coor.end(); ++it, ++it_this) 
+		(*it_this)=(*it);
 	
 
 
@@ -86,9 +82,10 @@ Vector operator+(const Vector& vector1, const Vector& vector2)
 
 	List<double>::Iterator it1 = vector1.coor.begin();
 	List<double>::Iterator it2 = vector2.coor.begin();
+	List<double>::Iterator it_temp = temp.coor.begin();
 
-	for (; it1 != vector1.coor.end(); ++it1, ++it2)
-		temp.coor.append(*it1 + *it2);
+	for (; it1 != vector1.coor.end(); ++it1, ++it2, ++it_temp)
+		(*it_temp)=(*it1 + *it2);
 
 
 
@@ -103,9 +100,11 @@ Vector operator-(const Vector& vector1, const Vector& vector2)
 
 	List<double>::Iterator it1 = vector1.coor.begin();
 	List<double>::Iterator it2 = vector2.coor.begin();
+	List<double>::Iterator it_temp = temp.coor.begin();
 
-	for (; it1 != vector1.coor.end(); ++it1, ++it2)
-		temp.coor.append(*it1 - *it2);
+	for (; it1 != vector1.coor.end(); ++it1, ++it2, ++it_temp)
+		(*it_temp) = (*it1 - *it2);
+
 
 
 
@@ -114,14 +113,16 @@ Vector operator-(const Vector& vector1, const Vector& vector2)
 
 Vector operator*(const double a, const Vector& vector1)
 {
+
 	Vector temp(vector1.dim);
 
 
 	List<double>::Iterator it = vector1.coor.begin();
+	List<double>::Iterator it_temp = temp.coor.begin();
 	
 
-	for (; it != vector1.coor.end(); ++it)
-		temp.coor.append(a * *it);
+	for (; it != vector1.coor.end(); ++it, ++it_temp)
+		(*it_temp) = (*it) * a;
 
 
 
@@ -168,10 +169,11 @@ std::istream& operator>>(std::istream& in, Vector& vector)
 
 
 	double temp;
-	for (size_t i = 0; i < vector.dim; i++)
+	List<double>::Iterator it = vector.coor.begin();
+	for (size_t i = 0; i < vector.dim; i++, ++it)
 	{
 		std::cin >> temp;
-		vector.coor.append(temp);
+		(*it)=temp;
 	}
 
 	return in;

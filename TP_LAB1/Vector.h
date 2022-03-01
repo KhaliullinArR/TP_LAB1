@@ -7,7 +7,7 @@
 class Vector {
 
 public:
-	Vector(const int length = 0);
+	Vector(const int length = 1);
 	Vector(const Vector& vector);
 	void setCoor(List<double>& list);
 	 List<double>& getCoor();

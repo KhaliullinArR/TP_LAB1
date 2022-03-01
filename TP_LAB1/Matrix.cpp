@@ -12,6 +12,8 @@ Matrix::Matrix(const Matrix& matrix):Matrix(matrix.m, matrix.n){
 
 Matrix::Matrix(const int m, const int n): m(m), n(n){
 
+	if (m <= 0 || n <= 0) throw MatrixDimException();
+
 	for (size_t i = 0; i < m; i++){
 		Vector vector(n);
 		raws.append(vector);
@@ -173,7 +175,7 @@ Matrix operator*(const Matrix& matrix1, const Matrix& matrix2)
 
 std::ostream& operator<<(std::ostream& out, Matrix& matrix) {
 	
-
+	std::cout << std::endl;
 
 	
 	List<Vector>::Iterator it = matrix.raws.begin();

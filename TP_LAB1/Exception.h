@@ -8,7 +8,7 @@ protected:
 	const char* exception;
 
 public:
-	MatrixException(const char* ex = "VectorException");
+	MatrixException(const char* ex = "MatrixException");
 	const char* getException() const;
 };
 
@@ -16,7 +16,7 @@ class MatrixDimException :public MatrixException {
 
 public:
 
-	MatrixDimException(const char* ex = "VectorException");
+	MatrixDimException(const char* ex = "MatrixDimException");
 };
 
 
@@ -37,7 +37,7 @@ public:
 
 class DifferentDimException : public VectorException {
 public:
-	DifferentDimException(const char* ex = "NegativeDimException");
+	DifferentDimException(const char* ex = "DifferentDimException");
 
 };
 

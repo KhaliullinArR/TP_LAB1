@@ -25,7 +25,7 @@
       <Filter>Исходные файлы</Filter>
     </ClInclude>
     <ClInclude Include="Matrix.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Исходные файлы</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

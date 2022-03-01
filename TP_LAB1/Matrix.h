@@ -10,7 +10,7 @@ class Matrix {
 
 public:
 	Matrix(const Matrix& matrix);
-	Matrix(const int m = 0, const int n = 0);
+	Matrix(const int m = 1, const int n = 1);
 	~Matrix();
 	int getColumnsCount();
 	int getRawsCount();
